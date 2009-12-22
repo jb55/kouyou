@@ -1,0 +1,16 @@
+{# Base Template #}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Home{% endblock %} | Kouyou</title>
+</head>
+<body>
+  Board List</br>
+  <ul>
+  {% for board in boards %}
+    <li>/{{ board.board_code }}/ {{ board.name }}</li>
+  {% endfor %}
+  </ul>
+  {% block content %}{% endblock %}
+</body>
+</html>

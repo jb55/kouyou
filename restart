@@ -1,0 +1,16 @@
+#!/bin/bash
+PROJDIR="$HOME/kouyou"
+PIDFILE="$PROJDIR/kouyou.pid"
+SOCK="/tmp/kouyou-fcgi.sock"
+
+cd $PROJDIR
+if [ -f $PIDFILE ]; then
+   kill `cat -- $PIDFILE`
+   rm -f -- $PIDFILE
+   rm -f -- $SOCK
+fi
+
+./kouyou.fcgi &
+sleep 0.5
+echo $! > $PIDFILE
+sudo chmod o+w $SOCK

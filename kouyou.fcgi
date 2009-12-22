@@ -1,8 +1,8 @@
 #!/usr/bin/python
 from flup.server.fcgi import WSGIServer
-from waka import make_app
+from kouyou.app import make_app
 
-sock_path = '/tmp/waka-fcgi.sock'
+sock_path = '/tmp/kouyou-fcgi.sock'
 
 application = make_app()
 WSGIServer(application, bindAddress=sock_path).run()

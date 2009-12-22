@@ -1,0 +1,10 @@
+{# Board Template #}
+{% extends 'master.htm' %}
+{% block title %}{{ board.fullname }}{% endblock %}
+{% block content %}
+This is a board<br/>
+Board Name: {{ board.name }}<br/>
+Board Id: {{ board.board_id }}<br/>
+Board Code: {{ board.board_code }}<br/>
+Board Fullname: {{ board.fullname }}<br/>
+{% endblock %}
