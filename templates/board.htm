@@ -7,4 +7,25 @@ Board Name: {{ board.name }}<br/>
 Board Id: {{ board.board_id }}<br/>
 Board Code: {{ board.board_code }}<br/>
 Board Fullname: {{ board.fullname }}<br/>
+<br/>
+{% for post in posts %}
+  <hr/>
+  <div class="thread">
+    <div class="post">
+      <span class="post-topic">{{ post.topic }}</span> 
+      <span class="post-author"> {{ post.author }}</span>
+      <span class="post-tripcode"> {{ post.tripcode }}</span>
+      <blockquote>{{ post.msg }}</blockquote>
+    </div>
+  {% for reply in post.replies %}
+    <div class="post reply">
+      <span class="post-topic">{{ reply.topic }}</div> 
+      <div class="post-author"> {{ reply.author }}</div>
+      <div class="post-tripcode"> {{ reply.tripcode }}</div>
+      <blockquote>{{ reply.msg }}</blockquote>
+    </div>
+  {% endfor %}
+  </div>
+{% endfor %}
+
 {% endblock %}

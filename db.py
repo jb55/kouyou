@@ -1,5 +1,5 @@
 from pymongo.connection import Connection
-from kouyou.models import Board
+from kouyou.models import Board, Post
 
 conn = Connection()
 database = conn.kouyou
@@ -13,9 +13,10 @@ class PostManager():
 
   def get_posts(self, boardid):
     latest_posts = list(self.posts.find({
-      'board': board, 
+      'board': boardid, 
     }))
-    return latest_posts
+    posts = [Post(post) for post in latest_posts]
+    return posts
 
 class BoardManager():
   def __init__(self):
