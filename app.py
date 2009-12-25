@@ -1,6 +1,6 @@
 from glashammer.application import make_app as make_app_glas
 from glashammer.utils import run_very_simple, Response, sibpath, local
-from kouyou import views
+from kouyou import views, forms
 from kouyou.db import BoardManager
 
 template_path = sibpath(__file__, 'templates')
@@ -9,7 +9,12 @@ def setup(app):
   app.add_template_searchpath(template_path)
   app.add_url('/', 'site/index')
   app.add_url('/<string(maxlength=3):board_code>', 'board/index')
+  app.add_url('/<string(maxlength=3):board_code>/newpost', 'board/newpost')
+  app.add_url('/<string(maxlength=3):board_code>/<string:thread_id>',
+              'board/thread')
+  app.add_view('board/newpost', forms.do_thread)
   app.add_view('board/index', views.board)
+  app.add_view('board/thread', views.thread)
   app.add_view('site/index', views.index)
 
   setup_template_globals(app)

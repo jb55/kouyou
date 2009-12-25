@@ -1,14 +1,12 @@
 from datetime import datetime
 
-CONST_ANONYMOUS = "Anonymous"
-
 class Model(object):
-  def __init__(self, d):
+  def __init__(self, d={}):
     if type(d) == type({}):
       for k in d.keys():
         setattr(self, k, d[k])
 
-  def as_dict():
+  def as_dict(self):
     d = {}
     for attr in self.attr:
       if hasattr(self, attr):
