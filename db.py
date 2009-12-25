@@ -59,7 +59,7 @@ class BoardManager():
     if thread_id != None:
       # reply
       self.posts.update(
-        {'id': thread_id}, 
+        {'_id': ObjectId(str(thread_id))}, 
         {'$push': {'replies': post.as_dict()}})
     else:
       post.board = board.board_id

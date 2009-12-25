@@ -1,6 +1,6 @@
 from glashammer.utils import render_response
 from kouyou.db import BoardManager
-from kouyou.forms import NewThreadForm
+from kouyou.forms import NewThreadForm, ReplyForm
 
 def board(req, board_code):
   bm = BoardManager()
@@ -24,5 +24,6 @@ def thread(req, board_code, thread_id):
   data["board"] = board
   post = bm.get_thread(thread_id)
   data["posts"] = (post,)
+  data["form"] = ReplyForm()
 
   return render_response('thread.htm', **data)
