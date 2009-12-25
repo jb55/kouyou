@@ -1,0 +1,19 @@
+{% for post in posts %}
+  <hr/>
+  <div class="thread">
+    <div class="post">
+      <span class="post-topic">{{ post.topic }}</span> 
+      <span class="post-author">{{ post.author|default('Anonymous') }}</span> 
+      <span class="post-tripcode">{{ post.tripcode }}</span> 
+      <span class="post-id"><a href="/{{ board.board_code }}/{{ post._id }}">No. {{ post.id }}</a></span>
+      <blockquote>{{ post.msg }}</blockquote>
+    </div>
+  {% for reply in post.replies %}
+    <div class="post reply">
+      <span class="post-author">{{ reply.author|default('Anonymous') }}</span> 
+      <span class="post-tripcode">{{ reply.tripcode }}</span>
+      <blockquote>{{ reply.msg }}</blockquote>
+    </div>
+  {% endfor %}
+  </div>
+{% endfor %}

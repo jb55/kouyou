@@ -1,0 +1,10 @@
+<p>New Thread</p>
+<form method="post" action="/{{ board.board_code }}/newpost">
+  {{ form.author.label }} {{ form.author }}<br/>
+  {{ form.tripcode.label }} {{ form.tripcode }}<br/>
+  {{ form.topic.label }} {{ form.topic }}<br/>
+  {{ form.image.label }} {{ form.image }}<br/>
+  {{ form.audio.label }} {{ form.audio }}<br/>
+  {{ form.audio.msg }} {{ form.msg }}<br/>
+  <input type="submit" value="Submit"/>
+</form>
