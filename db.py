@@ -1,7 +1,10 @@
 from pymongo.connection import Connection
 from pymongo.collection import ObjectId
+import pymongo
 from datetime import datetime
 from kouyou.models import Board, Post
+
+LIMIT_AMOUNT = 10
 
 conn = Connection()
 database = conn.kouyou
@@ -21,7 +24,7 @@ class BoardManager():
     return self.get_board(board_code)
 
   def get_board_id(self, board_code):
-    board = self.boards.find_one({'board_code': board_code})
+    board = self.boards.find_one({'board_code': board_code}, fields=['board_id'])
     if board != None:
       return board["board_id"]
     return None
@@ -44,11 +47,26 @@ class BoardManager():
     return Post(self.posts.find_one({'id': post_id}))
 
   def get_posts(self, boardid):
-    latest_posts = list(self.posts.find({
-      'board': boardid, 
-    }))
+    latest_posts = self.posts.find({
+      'board': boardid,}).limit(LIMIT_AMOUNT).sort('bumped_at', pymongo.DESCENDING)
     posts = [Post(post) for post in latest_posts]
     return posts
+
+  def archive_threads(self, boardid):
+    dying = self.posts.find(
+      {'board': boardid,
+       'dead': {'$exists': False}},
+      fields=[]).sort('bumped_at', pymongo.DESCENDING)[LIMIT_AMOUNT+1:]
+
+    dying_list = [obj["_id"] for obj in dying]
+    self.posts.update(
+      {'_id': {'$in': dying_list}},
+      {'$set': {'dead': 1}})
+
+  def can_bump_thread(self, thread_id):
+    spec = {'_id': ObjectId(str(thread_id))}
+    thread = Post(self.posts.find_one(spec, fields=Post.bump_fields))
+    return thread.can_bump()
 
   def insert_post(self, post, board_code=None, thread_id=None):
     if not post.is_valid():
@@ -58,11 +76,15 @@ class BoardManager():
     post.created_at = datetime.utcnow()
     if thread_id != None:
       # reply
-      self.posts.update(
-        {'_id': ObjectId(str(thread_id))}, 
-        {'$push': {'replies': post.as_dict()}})
+      spec = {'_id': ObjectId(str(thread_id))}
+      self.posts.update(spec, {'$push': {'replies': post.as_dict()}})
+      if self.can_bump_thread(thread_id):
+        self.posts.update(spec, {'$set': {'bumped_at': datetime.utcnow()}})
     else:
       post.board = board.board_id
+      if post.can_bump():
+        post.bumped_at = datetime.utcnow()
       self.posts.insert(post.as_dict())
-    return id
 
+    self.archive_threads(board.board_id)
+    return id

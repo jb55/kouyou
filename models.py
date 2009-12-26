@@ -30,12 +30,17 @@ class Post(Model):
   attr = ('_id',
           'id',
           'author',
+          'dead',
+          'sage',
           'topic',
+          'bumped_at',
           'tripcode',
           'created_at',
           'board',
           'replies',
           'msg',)
+
+  bump_fields = ['dead', 'sage']
 
   @staticmethod
   def new_post(dict):
@@ -44,4 +49,10 @@ class Post(Model):
     return post
 
   def is_valid(self):
+    return True
+
+  def can_bump(self):
+    for field in Post.bump_fields:
+      if hasattr(self, field):
+        return False
     return True

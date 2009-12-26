@@ -6,14 +6,14 @@ from kouyou.models import Post
 from kouyou.db import BoardManager
 
 class ReplyForm(Form):
-  author = TextField("Name", [validators.length(max=32)])
-  tripcode = PasswordField("Tripcode", [validators.length(max=32)])
+  author = TextField("Name", [validators.length(max=256)])
+  tripcode = PasswordField("Tripcode", [validators.length(max=256)])
   msg = TextAreaField("Message")
   image = FileField("Image")
   audio = FileField("Audio")
 
 class NewThreadForm(ReplyForm):
-  topic = TextField("Topic", [validators.length(max=32)])
+  topic = TextField("Topic", [validators.length(max=256)])
 
 def post_from_form(form):
   attrs = ('author', 'topic', 'tripcode', 'msg', 'image', 'audio')
