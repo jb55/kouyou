@@ -9,6 +9,7 @@ def setup(app):
   app.add_template_searchpath(template_path)
   app.add_url('/', 'site/index')
   app.add_url('/<string(maxlength=3):board_code>', 'board/index')
+  app.add_url('/<string(maxlength=3):board_code>/<int:page>', 'board/index')
   app.add_url('/<string(maxlength=3):board_code>/newpost', 'thread/new')
   app.add_url('/<string(maxlength=3):board_code>/<string:thread_id>',
               'thread/index')

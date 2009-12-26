@@ -1,14 +1,15 @@
 from glashammer.utils import render_response
-from kouyou.db import BoardManager
+from kouyou.db import BoardManager, NUM_PAGES
 from kouyou.forms import NewThreadForm, ReplyForm
 
-def board(req, board_code):
+def board(req, board_code, page=1):
   bm = BoardManager()
   board = bm.get_board(board_code)
 
   data = {}
   data["board"] = board
-  data["posts"] = bm.get_posts(board.board_id)
+  data["posts"] = bm.get_posts(board.board_id, page)
+  data["pages"] = NUM_PAGES
   data["form"] = NewThreadForm()
   return render_response('board.htm', **data)
   

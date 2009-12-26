@@ -5,6 +5,7 @@ from datetime import datetime
 from kouyou.models import Board, Post
 
 LIMIT_AMOUNT = 10
+NUM_PAGES = 2
 
 conn = Connection()
 database = conn.kouyou
@@ -46,21 +47,26 @@ class BoardManager():
   def get_post(self, post_id):
     return Post(self.posts.find_one({'id': post_id}))
 
-  def get_posts(self, boardid):
+  def get_posts(self, boardid, page=1):
+    start_pos = (page-1) * LIMIT_AMOUNT
+    end_pos = start_pos + LIMIT_AMOUNT
     latest_posts = self.posts.find({
-      'board': boardid,}).limit(LIMIT_AMOUNT).sort('bumped_at', pymongo.DESCENDING)
+      'board': boardid,}).sort('bumped_at', 
+      pymongo.DESCENDING)[start_pos:end_pos]
     posts = [Post(post) for post in latest_posts]
     return posts
 
   def archive_threads(self, boardid):
+    start_pos = (NUM_PAGES * LIMIT_AMOUNT)
     dying = self.posts.find(
       {'board': boardid,
        'dead': {'$exists': False}},
-      fields=[]).sort('bumped_at', pymongo.DESCENDING)[LIMIT_AMOUNT+1:]
+      fields=[]).sort('bumped_at', 
+      pymongo.DESCENDING)[start_pos:]
 
-    dying_list = [obj["_id"] for obj in dying]
+    dying_threads = [thread["_id"] for thread in dying]
     self.posts.update(
-      {'_id': {'$in': dying_list}},
+      {'_id': {'$in': dying_threads}},
       {'$set': {'dead': 1}})
 
   def can_bump_thread(self, thread_id):
@@ -72,6 +78,8 @@ class BoardManager():
     if not post.is_valid():
       return None
     board = self.increase_post_count(board_code)
+    self.archive_threads(board.board_id)
+
     post.id = board.count
     post.created_at = datetime.utcnow()
     if thread_id != None:
@@ -86,5 +94,4 @@ class BoardManager():
         post.bumped_at = datetime.utcnow()
       self.posts.insert(post.as_dict())
 
-    self.archive_threads(board.board_id)
     return id
