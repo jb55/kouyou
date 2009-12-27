@@ -65,9 +65,10 @@ class BoardManager():
       pymongo.DESCENDING)[start_pos:]
 
     dying_threads = [thread["_id"] for thread in dying]
-    self.posts.update(
-      {'_id': {'$in': dying_threads}},
-      {'$set': {'dead': 1}})
+    if len(dying_threads) > 0:
+      self.posts.update(
+        {'_id': {'$in': dying_threads}},
+        {'$set': {'dead': 1}})
 
   def can_bump_thread(self, thread_id):
     spec = {'_id': ObjectId(str(thread_id))}
