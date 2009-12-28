@@ -1,16 +1,13 @@
 #!/bin/bash
-PROJDIR="$HOME/kouyou"
+PROJDIR="/home/jb55/kouyou"
 PIDFILE="$PROJDIR/kouyou.pid"
-SOCK="/tmp/kouyou-fcgi.sock"
+SPAREPROC=1
+MAXCHILD=1
 
 cd $PROJDIR
 if [ -f $PIDFILE ]; then
    kill `cat -- $PIDFILE`
    rm -f -- $PIDFILE
-   rm -f -- $SOCK
 fi
+exec python ./manage.py runfcgi maxspare=$SPAREPROC maxchildren=$MAXCHILD host=127.0.0.1 port=9098 pidfile=$PIDFILE --settings=settings
 
-./kouyou.fcgi &
-sleep 0.5
-echo $! > $PIDFILE
-sudo chmod o+w $SOCK
