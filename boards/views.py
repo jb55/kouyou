@@ -1,4 +1,4 @@
-from glashammer.utils import render_response
+from django.shortcuts import render_to_response
 from kouyou.boards.db import BoardManager, NUM_PAGES
 from kouyou.boards.forms import NewThreadForm, ReplyForm
 
@@ -7,24 +7,26 @@ def board(req, board_code, page=1):
   board = bm.get_board(board_code)
 
   data = {}
+  data["boards"] = bm.get_board()
   data["board"] = board
   data["posts"] = bm.get_posts(board.board_id, page)
   data["pages"] = NUM_PAGES
   data["form"] = NewThreadForm()
-  return render_response('board.htm', **data)
+  return render_response('board.htm', data)
   
 def index(req):
   data = {}
-  return render_response('index.htm', **data)
+  return render_response('index.htm', data)
 
 def thread(req, board_code, thread_id):
   bm = BoardManager()
   board = bm.get_board(board_code)
 
   data = {}
+  data["boards"] = bm.get_board()
   data["board"] = board
   post = bm.get_thread(thread_id)
   data["posts"] = (post,)
   data["form"] = ReplyForm()
 
-  return render_response('thread.htm', **data)
+  return render_response('thread.htm', data)
