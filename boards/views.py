@@ -1,6 +1,6 @@
 from glashammer.utils import render_response
-from kouyou.db import BoardManager, NUM_PAGES
-from kouyou.forms import NewThreadForm, ReplyForm
+from kouyou.boards.db import BoardManager, NUM_PAGES
+from kouyou.boards.forms import NewThreadForm, ReplyForm
 
 def board(req, board_code, page=1):
   bm = BoardManager()

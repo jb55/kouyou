@@ -2,8 +2,8 @@ from wtforms import (Form, TextField,
   PasswordField, validators, FileField, TextAreaField)
 from glashammer.utils import redirect
 from datetime import datetime
-from kouyou.models import Post
-from kouyou.db import BoardManager
+from kouyou.boards.models import Post
+from kouyou.boards.db import BoardManager
 
 class ReplyForm(Form):
   author = TextField("Name", [validators.length(max=256)])

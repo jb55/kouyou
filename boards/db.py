@@ -2,7 +2,7 @@ from pymongo.connection import Connection
 from pymongo.collection import ObjectId
 import pymongo
 from datetime import datetime
-from kouyou.models import Board, Post
+from kouyou.boards.models import Board, Post
 
 LIMIT_AMOUNT = 10
 NUM_PAGES = 2
