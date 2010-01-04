@@ -3,16 +3,16 @@
     <div class="post">
       <div class="post-head">
         <span class="topic"><b>&gt;</b> {{ post.topic }}</span> 
-        <span class="author">{{ post.author|default('Anonymous') }}</span> 
+        <span class="author">{{ post.author|default:'Anonymous' }}</span> 
         <span class="tripcode">{{ post.tripcode }}</span> 
         <span class="date">{{ post.created_at }}</span>
-        <span class="pid"><a href="/{{ board.board_code }}/{{ post._id }}">No. {{ post.id }}</a></span>
+        <span class="pid"><a href="/{{ board.board_code }}/{{ post.oid }}">No. {{ post.id }}</a></span>
       </div>
       <blockquote>{{ post.msg }}</blockquote>
     </div>
   {% for reply in post.replies %}
     <div class="reply">
-      <span class="author"><b>&gt;&gt;</b> {{ reply.author|default('Anonymous') }}</span> 
+      <span class="author"><b>&gt;&gt;</b> {{ reply.author|default:'Anonymous' }}</span> 
       <span class="tripcode">{{ reply.tripcode }}</span>
       <span class="date">{{ reply.created_at }}</span>
       <span class="pid">No. {{ reply.id }}</span>

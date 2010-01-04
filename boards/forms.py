@@ -1,19 +1,19 @@
-from wtforms import (Form, TextField, 
-  PasswordField, validators, FileField, TextAreaField)
-from glashammer.utils import redirect
 from datetime import datetime
+from django import forms
+from django.http import HttpResponseRedirect
 from kouyou.boards.models import Post
 from kouyou.boards.db import BoardManager
 
-class ReplyForm(Form):
-  author = TextField("Name", [validators.length(max=256)])
-  tripcode = PasswordField("Tripcode", [validators.length(max=256)])
-  msg = TextAreaField("Message")
-  image = FileField("Image")
-  audio = FileField("Audio")
+class ReplyForm(forms.Form):
+  author = forms.CharField(max_length=128, required=False)
+  tripcode = forms.CharField(max_length=128, required=False,
+    widget=forms.PasswordInput(render_value=False))
+  msg = forms.CharField(widget=forms.widgets.Textarea(), max_length=65536)
+  image = forms.FileField(required=False)
+  audio = forms.FileField(required=False)
 
 class NewThreadForm(ReplyForm):
-  topic = TextField("Topic", [validators.length(max=256)])
+  topic = forms.CharField(max_length=128, required=False)
 
 def post_from_form(form):
   attrs = ('author', 'topic', 'tripcode', 'msg', 'image', 'audio')
@@ -22,26 +22,26 @@ def post_from_form(form):
   # the ones that exist and insert them into the
   # post object
   for attr in attrs:
-    if hasattr(form, attr):
-      formattr = getattr(form, attr)
-      if formattr.data:
-        setattr(post, attr, formattr.data)
+    if form.cleaned_data.has_key(attr):
+      data = form.cleaned_data[attr]
+      setattr(post, attr, data)
   return post 
 
 def do_post(req, board_code, thread_id=None):
   post = Post()
   form = None
   if thread_id:
-    form = ReplyForm(req.form)
+    form = ReplyForm(req.POST)
   else:
-    form = NewThreadForm(req.form)
+    form = NewThreadForm(req.POST)
 
-  if form.validate():
+  if form.is_valid():
     bm = BoardManager()
     post = post_from_form(form)
     bm.insert_post(post, board_code, thread_id)
 
   if thread_id:
-    return redirect(''.join(['/', board_code, '/', thread_id]))
+    return HttpResponseRedirect(''.join(['/', board_code, '/', thread_id]))
   else:
-    return redirect('/' + board_code)
+    return HttpResponseRedirect('/' + board_code)
+

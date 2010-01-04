@@ -1,5 +1,5 @@
 {% extends 'master.htm' %}
-{% block title %}{{ board.fullname }} - {{ posts[0].topic }}{% endblock %}
+{% block title %}{{ board.fullname }} - {{ thread.topic }}{% endblock %}
 {% block content %} 
 {% include 'replyform.htm' %}
 {% include 'posts.htm' %}

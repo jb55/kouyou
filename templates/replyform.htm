@@ -1,5 +1,5 @@
 <p>New Reply</p>
-<form method="post" action="/{{ board.board_code }}/{{ posts[0]._id }}/reply">
+<form method="post" action="/{{ board.board_code }}/{{ thread.oid }}/reply">
   {{ form.author.label }} {{ form.author }}<br/>
   {{ form.tripcode.label }} {{ form.tripcode }}<br/>
   {{ form.image.label }} {{ form.image }}<br/>

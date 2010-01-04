@@ -6,6 +6,10 @@ class Model(object):
       for k in d.keys():
         setattr(self, k, d[k])
 
+  @property
+  def oid(self):
+    return self._id;
+
   def as_dict(self):
     d = {}
     for attr in self.attr:

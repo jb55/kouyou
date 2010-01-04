@@ -24,9 +24,9 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # memcached
-CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
-CACHE_MIDDLEWARE_KEY_PREFIX = 'kouyou'
-CACHE_MIDDLEWARE_SECONDS = 10 # 10 seconds, pretty much near real time
+#CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+#CACHE_MIDDLEWARE_KEY_PREFIX = 'kouyou'
+#CACHE_MIDDLEWARE_SECONDS = 10 # 10 seconds, pretty much near real time
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -69,12 +69,12 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.cache.UpdateCacheMiddleware', # must be first
+#    'django.middleware.cache.UpdateCacheMiddleware', # must be first
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'jgblue.middleware.StripWhitespaceMiddleware', 
-    'django.middleware.cache.FetchFromCacheMiddleware', # must be last
+#    'django.middleware.cache.FetchFromCacheMiddleware', # must be last
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

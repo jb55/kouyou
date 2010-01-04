@@ -11,7 +11,7 @@ Board Fullname: {{ board.fullname }}<br/>
 {% include 'newthreadform.htm' %}
 {% include 'posts.htm' %}
 Pages: 
-{% for number in range(1, pages+1) %}
+{% for number in pages %}
   <a href="/{{ board.board_code }}/{{ number }}">{{ number }}</a> 
 {% endfor %}
 {% endblock %}
