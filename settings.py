@@ -15,10 +15,10 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Email
-SERVER_EMAIL = "django@newchan.org"
+SERVER_EMAIL = "django@example.org"
 
 ADMINS = (
-    ('Admins', 'admin@newchan.org'),
+    ('Admins', 'admin@example.org'),
 )
 
 MANAGERS = ADMINS
@@ -51,15 +51,15 @@ MEDIA_ROOT = STATIC_DIR
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://static.newchan.org/'
+MEDIA_URL = 'http://static.example.org/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = 'http://static.newchan.org/admin_media/'
+ADMIN_MEDIA_PREFIX = 'http://static.example.org/admin_media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'ea0gdtmdh4(78!o=qcq7o+!um*$1*1%4&+%*x7d#wm=5s@_r89'
+SECRET_KEY = 'mysupersecretkey'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
