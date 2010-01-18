@@ -50,25 +50,20 @@ class BoardManager():
   def get_posts(self, boardid, page=1):
     start_pos = (page-1) * LIMIT_AMOUNT
     end_pos = start_pos + LIMIT_AMOUNT
-    latest_posts = self.posts.find({
-      'board': boardid,}).sort('bumped_at', 
-      pymongo.DESCENDING)[start_pos:end_pos]
+    latest_posts = self.posts.find({'board': boardid,})
+      .sort('bumped_at', pymongo.DESCENDING)[start_pos:end_pos]
     posts = [Post(post) for post in latest_posts]
     return posts
 
   def archive_threads(self, boardid):
     start_pos = (NUM_PAGES * LIMIT_AMOUNT)
     dying = self.posts.find(
-      {'board': boardid,
-       'dead': {'$exists': False}},
-      fields=[]).sort('bumped_at', 
-      pymongo.DESCENDING)[start_pos:]
+      {'board': boardid, 'dead': {'$exists': False}}, fields=[])
+        .sort('bumped_at', pymongo.DESCENDING)[start_pos:]
 
     dying_threads = [thread["_id"] for thread in dying]
     if len(dying_threads) > 0:
-      self.posts.update(
-        {'_id': {'$in': dying_threads}},
-        {'$set': {'dead': 1}})
+      self.posts.update({'_id': {'$in': dying_threads}}, {'$set': {'dead': 1}})
 
   def can_bump_thread(self, thread_id):
     spec = {'_id': ObjectId(str(thread_id))}
